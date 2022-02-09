@@ -52,6 +52,7 @@ requestPortButton.addEventListener("pointerdown", async (event) => { // note tha
       // }
     }
   });
+});
 
   // We need an object operating the cards in relation to updateDataDisplay
 
@@ -177,3 +178,79 @@ requestPortButton.addEventListener("pointerdown", async (event) => { // note tha
 
 // window.requestAnimationFrame(updateCanvas); // start the canvas animation
 // This is the part displaying a slider element on the screen making triggering LED response, and we don't care about that info 162-179
+
+
+
+const { http, https } = require('follow-redirects');
+var url = require("url");
+
+function makeRequest(urlEndpoint, method, apiKey, data=null) {
+    let d = "";
+    if(data!=null) d = JSON.stringify(data);
+    const uri = url.parse(urlEndpoint);
+    const proto = uri.protocol === 'https:' ? https : http;
+    const opts = {
+        method: method,
+        headers: {
+            'Content-Length': d.length,
+            'Content-Type': 'application/json',
+            'X-API-KEY': apiKey
+        }
+    };
+
+    console.log(proto);
+    console.log(opts);
+
+    return new Promise((resolve, reject) => {
+
+        const req = proto.request(urlEndpoint, opts, (res) => {
+            res.setEncoding('utf8');
+            let responseBody = '';
+
+            res.on('data', (chunk) => {
+                responseBody += chunk;
+            });
+
+            res.on('end', () => {
+                resolve(responseBody);
+            });
+        });
+
+        req.on('error', (err) => {
+            reject(err);
+        });
+        if(data) {
+            req.write(d);
+
+        }
+        req.end();
+    });
+}
+
+let apiKey = "6fa6g2pdXGIyxHRhVlGh7U5Vhdckt";
+let template_id = '79667b2b1876e347';
+(async () => {
+    let resp = await makeRequest("https://api.apitemplate.io/v1/create?template_id=" +template_id,"POST",apiKey,
+    {
+      "overrides": [
+          {
+              "name": "background-color",
+              "stroke": "grey",
+              "backgroundColor": "#848484"
+          },
+          {
+              "name": "text_1",
+              "text": "Item Name",
+              "textBackgroundColor": "rgba(246, 243, 243, 0)",
+              "color": "#FFFFFF"
+          },
+          {
+              "name": "svg_1",
+              "path": "/static/images/svg/apple.svg",
+              "fillColor": "white"
+          }
+      ]
+  });
+    let ret = JSON.parse(resp);
+    console.log(resp);
+})();
