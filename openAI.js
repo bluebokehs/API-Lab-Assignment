@@ -10,7 +10,7 @@
  */
 
 
-const openAIKey = "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";
+const openAIKey = "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";
 if (openAIKey.length === 0) {
   alert("You need to enter an API or your request will fail.")
 }

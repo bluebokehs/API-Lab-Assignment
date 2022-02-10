@@ -63,6 +63,7 @@ button {
     color: #ffffff;
     font-size: 40px;
     text-align: center;
+    margin-top: 10%;
 }
 
 #icons {
@@ -78,20 +79,15 @@ button {
 }
 
 #no {
-    margin-top: 26%;
+    margin-top: 12%;
     color: #E36555;
     margin-right: 140px;
 }
 
 #yes {
-    margin-top: 26%;
+    margin-top: 12%;
     color: #87E3C0;
     margin-left: 140px;
-}
-
-#pass {
-    margin-bottom: 18%;
-    color: #F7D65B;
 }
 
 
