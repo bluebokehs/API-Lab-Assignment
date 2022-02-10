@@ -29,7 +29,7 @@ const state = {
 
 if (!("serial" in navigator)) {
   alert("Your browser does not support Web Serial, try using something Chromium based.")
-} //You're using the wrong browser! 
+} //You're using the wrong browser!
 
 
 const requestPortButton = document.querySelector("#request-port-access");

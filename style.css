@@ -47,16 +47,22 @@ button {
     color: #ffffff;
 }
 
-#balance-txt {
+#info-txt {
     font-size: 45px;
     color: #ffffff;
 }
 
-#balance-btn {
+#info-btn {
     width: 220px;
     font-size: 30px;
     color: #ffffff;
     background-color: #DA9CF1;
+}
+
+#response {
+    color: #ffffff;
+    font-size: 40px;
+    text-align: center;
 }
 
 #icons {
@@ -67,19 +73,25 @@ button {
 
 }
 
-#icons i, p {
-    margin-top: 18%;
+#icons i {
     padding: 50px;
 }
 
-#decline {
+#no {
+    margin-top: 26%;
     color: #E36555;
     margin-right: 140px;
 }
 
-#accept {
+#yes {
+    margin-top: 26%;
     color: #87E3C0;
     margin-left: 140px;
+}
+
+#pass {
+    margin-bottom: 18%;
+    color: #F7D65B;
 }
 
 
