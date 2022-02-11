@@ -66,7 +66,7 @@ const state = {
 JSONRequest(url, options, (data => {
   state.responses.push(data);
   console.dir(data);
-  const hello = document.getElementById("response");
+  const responseUI = document.getElementById("response");
   const responseFromAPI = data.choices[0].text;
-  hello.innerHTML = responseFromAPI;
+  responseUI.innerHTML = responseFromAPI;
 }));

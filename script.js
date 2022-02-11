@@ -1,5 +1,6 @@
 "use strict"
 
+
 /*
   This script communicates bidirectionally with an Arduino through JSON.
   It appears quite a bit more complicated than what we have seen before,
@@ -43,6 +44,13 @@ requestPortButton.addEventListener("pointerdown", async (event) => { // note tha
       writeJoystickColorToArduinoRight();
       hasMoved = true;
     } else {
+      JSONRequest(url, options, (data => {
+        state.responses.push(data);
+        console.dir(data);
+        const responseUI = document.getElementById("response");
+        const responseFromAPI = data.choices[0].text;
+        responseUI.innerHTML = responseFromAPI;
+      }));
       hasMoved = false;
     }
   });
