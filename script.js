@@ -34,7 +34,7 @@ requestPortButton.addEventListener("pointerdown", async (event) => { // note tha
   // We start the reader function, an async loop that gets data from serial (if any) and then calls the callback
   readJSONFromArduino(async () => {
     // NOTE This is where we can put our code that runs after the joystick has been read
-    updateDataDisplay();
+  //updateDataDisplay(); BANE OF MY EXISTINCE THIS LINE STINKS!!//
     let hasMoved = false;
     if (state.joystick.x < 200 && !hasMoved) {
       writeJoystickColorToArduinoLeft();
@@ -67,7 +67,7 @@ const readJSONFromArduino = async (callback) => {
     if (response.done) {
       reader.releaseLock();
       break;
-    }
+    } 
 
     // Again, a bit more complex. We have to manully handle the response
     // from the Arduino. See the demo.
@@ -121,7 +121,7 @@ const writeJoystickColorToArduinoLeft = async () => {
 }
 
 
-// Simple monitoring
+/*
 const updateDataDisplay = () => {
   document.querySelector("#joystick-x").innerHTML = state.joystick.x;
   document.querySelector("#joystick-y").innerHTML = state.joystick.y;
@@ -129,12 +129,13 @@ const updateDataDisplay = () => {
 }
 
 
+
 // This is the same as the Arduino function `map`, a name that is already occupied in JS by something completely different (would you have guessed)
 const mapRange = (value, fromLow, fromHigh, toLow, toHigh) => {
   return toLow + (toHigh - toLow) * (value - fromLow) / (fromHigh - fromLow);
 }
-
-
+*/
+/*
 const updateCanvas = () => {
   ctx.clearRect(0, 0, 512, 512); // Clear the screen
 
@@ -157,7 +158,7 @@ const updateCanvas = () => {
 
   window.requestAnimationFrame(updateCanvas);
 }
-
+*/
 
 
 const state = {
