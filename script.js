@@ -35,8 +35,15 @@ requestPortButton.addEventListener("pointerdown", async (event) => { // note tha
   readJSONFromArduino(async () => {
     // NOTE This is where we can put our code that runs after the joystick has been read
     updateDataDisplay();
-    if (state.joystick.pressed) {
-      writeJoystickBrightnessToArduino();
+    let hasMoved = false;
+    if (state.joystick.x < 200 && !hasMoved) {
+      writeJoystickColorToArduinoLeft();
+      hasMoved = true;
+    } else if (state.joystick.x > 800 && !hasMoved) {
+      writeJoystickColorToArduinoRight();
+      hasMoved = true;
+    } else {
+      hasMoved = false;
     }
   });
 });
@@ -97,9 +104,18 @@ const writeJSONToArduino = async (callback) => {
 
 // Take the joystick data, map it to the LEDs range and and shuffle it over to the writer
 // NOTE This is the place where we would set the .red .green & .blue
-const writeJoystickBrightnessToArduino = async () => {
-  state.dataToWrite.green = 0; // NOTE replace these numbers with whatever you want the RGB to be
+const writeJoystickColorToArduinoRight = async () => {
   state.dataToWrite.red = 0;   // NOTE replace these numbers with whatever you want the RGB to be
+  state.dataToWrite.green = 255; // NOTE replace these numbers with whatever you want the RGB to be
+  state.dataToWrite.blue = 0;  // NOTE replace these numbers with whatever you want the RGB to be
+  writeJSONToArduino();
+}
+
+// Take the joystick data, map it to the LEDs range and and shuffle it over to the writer
+// NOTE This is the place where we would set the .red .green & .blue
+const writeJoystickColorToArduinoLeft = async () => {
+  state.dataToWrite.red = 255;   // NOTE replace these numbers with whatever you want the RGB to be
+  state.dataToWrite.green = 0; // NOTE replace these numbers with whatever you want the RGB to be
   state.dataToWrite.blue = 0;  // NOTE replace these numbers with whatever you want the RGB to be
   writeJSONToArduino();
 }
@@ -145,11 +161,9 @@ const updateCanvas = () => {
 
 const brightnessSlider = document.querySelector("#brightness-slider");
 brightnessSlider.addEventListener("input", (event) => {
-  if (!state.joystick.pressed) {
     const brightness = event.target.value;
     state.dataToWrite.brightness = parseInt(brightness);
     writeJSONToArduino();
-  }
 });
 
 
