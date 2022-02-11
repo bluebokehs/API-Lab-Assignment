@@ -47,18 +47,6 @@ button {
     color: #ffffff;
 }
 
-#info-txt {
-    font-size: 45px;
-    color: #ffffff;
-}
-
-#info-btn {
-    width: 220px;
-    font-size: 30px;
-    color: #ffffff;
-    background-color: #DA9CF1;
-}
-
 #response {
     color: #ffffff;
     font-size: 40px;
