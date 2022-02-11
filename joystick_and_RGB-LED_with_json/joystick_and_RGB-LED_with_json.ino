@@ -16,17 +16,25 @@ int joystickY = 0;
 bool joystickPressed = 0;
 
 // LED pins
-const byte LED_PIN = 6;
+const byte RED_PIN   = 9;
+const byte GREEN_PIN = 10;
+const byte BLUE_PIN  = 11;
+
 
 // LED variables
-int LEDBrightness = 0;
+int red   = 0;
+int green = 0;
+int blue  = 0;
 
 void setup() {
     pinMode(JOYSTICK_PIN_X, INPUT);
     pinMode(JOYSTICK_PIN_Y, INPUT);
     pinMode(JOYSTICK_PIN_BUTTON, INPUT_PULLUP);
 
-    pinMode(LED_PIN, OUTPUT);
+    pinMode(RED_PIN, OUTPUT);
+    pinMode(GREEN_PIN, OUTPUT);
+    pinMode(BLUE_PIN, OUTPUT);
+
 
     Serial.begin(9600); 
     while (!Serial) continue;
@@ -57,21 +65,24 @@ void writeJSONToSerial() {
 void readJSONFromSerial() {
     /* Use https://arduinojson.org/v6/assistant/ to get size of buffer
        Here we assume the JSON { "brightness": {0-255} } */
-    StaticJsonDocument<32> jsonInput;
+    StaticJsonDocument<64> jsonInput;
 
     // We can read directly from Serial using ArduinoJson!
     deserializeJson(jsonInput, Serial); // we don't use the jsonError 
 
     // DeserializeJson puts the deserialized json back into the variable `jsonInput`, after which we can extract values at will.
-    int newBrightness = jsonInput["brightness"];
-    if (newBrightness) {
-      LEDBrightness = newBrightness;
-    }
+      red   = jsonInput["red"];
+      green = jsonInput["green"];
+      blue  = jsonInput["blue"];
+
 }
 
 
 void updateLED() {
-    analogWrite(LED_PIN, LEDBrightness);
+    analogWrite(RED_PIN, red);
+    analogWrite(GREEN_PIN, green);
+    analogWrite(BLUE_PIN, blue);
+
 }
 
 void loop() {
