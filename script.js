@@ -159,17 +159,6 @@ const updateCanvas = () => {
 }
 
 
-const brightnessSlider = document.querySelector("#brightness-slider");
-brightnessSlider.addEventListener("input", (event) => {
-    const brightness = event.target.value;
-    state.dataToWrite.brightness = parseInt(brightness);
-    writeJSONToArduino();
-});
-
-
-const canvas = document.querySelector("#joystick-canvas");
-const ctx = canvas.getContext("2d");
-
 
 const state = {
   dataToWrite: {
@@ -184,6 +173,3 @@ const state = {
     pressed: false,
   },
 }
-
-
-window.requestAnimationFrame(updateCanvas); // start the canvas animation
