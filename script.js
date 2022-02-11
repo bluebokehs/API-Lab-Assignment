@@ -44,6 +44,13 @@ requestPortButton.addEventListener("pointerdown", async (event) => { // note tha
       writeJoystickColorToArduinoRight();
       hasMoved = true;
     } else {
+      JSONRequest(url, options, (data => {
+        state.responses.push(data);
+        console.dir(data);
+        const responseUI = document.getElementById("response");
+        const responseFromAPI = data.choices[0].text;
+        responseUI.innerHTML = responseFromAPI;
+      }));
       hasMoved = false;
     }
   });
@@ -175,3 +182,51 @@ const state = {
     pressed: false,
   },
 }
+
+
+
+
+
+
+
+const openAIKey = "insert API key here";
+if (openAIKey.length === 0) {
+  alert("You need to enter an API or your request will fail.")
+}
+
+
+/* Generic function to call an API, returns the response as JSON.
+   Assumes no knowledge of the resource it is trying to find behind the URL.
+   Expects the URL to be fully prepared with any search params.
+   Errors on response errors. */
+const JSONRequest = async (url, options, callback) => {
+  const response = await fetch(url, options);
+
+  if (response.ok) {
+    const json = await response.json();
+    callback(json);
+  } else {
+    const errorMessage = `An error has occured: ${response.status}`;
+    throw new Error(errorMessage);
+  }
+}
+
+/* This is where we provide the information required by the OpenAI API
+   We need to provide an URL of the resource we are fetching,
+   some JSON with the input that we have been specified to send. */
+
+const url = new URL("https://api.openai.com/v1/engines/text-davinci-001/completions");
+
+const responseBody = {
+  prompt: "Create a yes or no question",
+};
+
+const options = {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer " + openAIKey,
+  },
+  body: JSON.stringify(responseBody),
+}
+
