@@ -230,3 +230,15 @@ const options = {
   body: JSON.stringify(responseBody),
 }
 
+const state = {
+  responses: [],
+}
+
+JSONRequest(url, options, (data => {
+  state.responses.push(data);
+  console.dir(data);
+  const responseUI = document.getElementById("response");
+  const responseFromAPI = data.choices[0].text;
+  responseUI.innerHTML = responseFromAPI;
+}));
+
