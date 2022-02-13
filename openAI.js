@@ -1,13 +1,6 @@
 "use strict";
 
-/* This script communicates with the OpenAI API using POST requests.
-   It sends a single, preset request and gets us a response back.
-
-   You will have to provide your own API key for this to work,
-   see the variable "openAIKey". Get a key: https://openai.com/api/
-
-   - Love Lagerkvist, 220110, Malmö Universitet
- */
+// OWEN:This script sets up OpenAI and prompts the AI to create a yes or no question.
 
 
 const openAIKey = "insert API key here";
@@ -16,10 +9,8 @@ if (openAIKey.length === 0) {
 }
 
 
-/* Generic function to call an API, returns the response as JSON.
-   Assumes no knowledge of the resource it is trying to find behind the URL.
-   Expects the URL to be fully prepared with any search params.
-   Errors on response errors. */
+/* OWEN: This is a standard call to the API and it 
+returns the response in JSON format.*/
 const JSONRequest = async (url, options, callback) => {
   const response = await fetch(url, options);
 
@@ -32,9 +23,8 @@ const JSONRequest = async (url, options, callback) => {
   }
 }
 
-/* This is where we provide the information required by the OpenAI API
-   We need to provide an URL of the resource we are fetching,
-   some JSON with the input that we have been specified to send. */
+/* OWEN: This is where we create parameters that the AI 
+needs in order to function correctly. */
 
 const url = new URL("https://api.openai.com/v1/engines/text-davinci-001/completions");
 
@@ -52,17 +42,15 @@ const options = {
 }
 
 
-/* `state` is just an object that we use to keep track
-   of all of our application state. In this example, we
-   only have one property, `reponses`, but you could image
-   adding more properties to model the user interaction. */
+/* OWEN: this is simply all of the responses that are 
+currently being used. */
 const state = {
   responses: [],
 }
 
-/* Check the console to see the returned JSON/object
-   It might take a second to get the response from
-   the OpenAI api as it has to generate the response. */
+/* OWEN: This function sets the text of the paragraph 
+  with the id "response" to the response that the AI comes back 
+  with and displays it on the screen. */
 JSONRequest(url, options, (data => {
   state.responses.push(data);
   console.dir(data);

@@ -1,5 +1,7 @@
 "use strict"
 
+// OWEN: any comment line with "OWEN:" before the comment indicates my comments on the code that my group implemented during this project. - Owen Kern
+
 
 /*
   This script communicates bidirectionally with an Arduino through JSON.
@@ -33,17 +35,20 @@ requestPortButton.addEventListener("pointerdown", async (event) => { // note tha
   document.querySelector("#port-txt").innerHTML = "Arduino is connected!"; //"product name" connected!
 
   // We start the reader function, an async loop that gets data from serial (if any) and then calls the callback
+  // OWEN: In this function, we have the logic for the joystick
   readJSONFromArduino(async () => {
-    // NOTE This is where we can put our code that runs after the joystick has been read
-  //updateDataDisplay(); BANE OF MY EXISTINCE THIS LINE STINKS!!//
     let hasMoved = false;
+    // OWEN: if the joystick is less than a certain x value (aka moving to the left enough), then we turn the light red
+    // OWEN: we set hasMoved to true so that this function doesn't keep taking inputs while the joystick is still in the left or right position.
     if (state.joystick.x < 200 && !hasMoved) {
       writeJoystickColorToArduinoLeft();
       hasMoved = true;
-    } else if (state.joystick.x > 800 && !hasMoved) {
+    } // OWEN: if the joystick is more than a certain x value (aka moving to the right enough), then we turn the light green
+    else if (state.joystick.x > 800 && !hasMoved) {
       writeJoystickColorToArduinoRight();
       hasMoved = true;
-    } else {
+    } // OWEN: if the joystick has moved back to the center, we must make hasMoved false to indicate that another movement can be made at this point. 
+    else {
       hasMoved = false;
     }
   });
@@ -104,63 +109,22 @@ const writeJSONToArduino = async (callback) => {
 
 
 // Take the joystick data, map it to the LEDs range and and shuffle it over to the writer
-// NOTE This is the place where we would set the .red .green & .blue
+// OWEN: Assigns values from 0-255 to each color for the LED. In this case, giving 255 to green makes the LED shine green.
 const writeJoystickColorToArduinoRight = async () => {
-  state.dataToWrite.red = 0;   // NOTE replace these numbers with whatever you want the RGB to be
-  state.dataToWrite.green = 255; // NOTE replace these numbers with whatever you want the RGB to be
-  state.dataToWrite.blue = 0;  // NOTE replace these numbers with whatever you want the RGB to be
+  state.dataToWrite.red = 0;   
+  state.dataToWrite.green = 255; 
+  state.dataToWrite.blue = 0;  
   writeJSONToArduino();
 }
 
 // Take the joystick data, map it to the LEDs range and and shuffle it over to the writer
-// NOTE This is the place where we would set the .red .green & .blue
+// OWEN: Assigns values from 0-255 to each color for the LED. In this case, giving 255 to red makes the LED shine red.
 const writeJoystickColorToArduinoLeft = async () => {
-  state.dataToWrite.red = 255;   // NOTE replace these numbers with whatever you want the RGB to be
-  state.dataToWrite.green = 0; // NOTE replace these numbers with whatever you want the RGB to be
-  state.dataToWrite.blue = 0;  // NOTE replace these numbers with whatever you want the RGB to be
+  state.dataToWrite.red = 255;
+  state.dataToWrite.green = 0;
+  state.dataToWrite.blue = 0;  
   writeJSONToArduino();
 }
-
-
-/*
-const updateDataDisplay = () => {
-  document.querySelector("#joystick-x").innerHTML = state.joystick.x;
-  document.querySelector("#joystick-y").innerHTML = state.joystick.y;
-  document.querySelector("#joystick-pressed").innerHTML = state.joystick.pressed;
-}
-
-
-
-// This is the same as the Arduino function `map`, a name that is already occupied in JS by something completely different (would you have guessed)
-const mapRange = (value, fromLow, fromHigh, toLow, toHigh) => {
-  return toLow + (toHigh - toLow) * (value - fromLow) / (fromHigh - fromLow);
-}
-*/
-/*
-const updateCanvas = () => {
-  ctx.clearRect(0, 0, 512, 512); // Clear the screen
-
-  if (state.joystick.x) {
-    const x = mapRange(state.joystick.x, 0, 1024, 0, 512);
-    const y = mapRange(state.joystick.y, 0, 1024, 0, 512);
-
-    ctx.beginPath();
-    ctx.arc(x, y, 10, 0, 2 * Math.PI);
-    ctx.strokeStyle = "white";
-
-    if (state.joystick.pressed) {
-      ctx.fillStyle = "rebeccapurple";
-    } else {
-      ctx.fillStyle = "gray";
-    }
-
-    ctx.fill();
-  }
-
-  window.requestAnimationFrame(updateCanvas);
-}
-*/
-
 
 const state = {
   dataToWrite: {
